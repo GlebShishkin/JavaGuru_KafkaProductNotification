@@ -1,0 +1,69 @@
+---------------------------------------
+--  создание и работа с топиком в docker
+-- см. https://hub.docker.com/r/apache/kafka
+-- + через docker-compose.yml создадим IU для просмотра Kafka в docker по от. можно зайти http://localhost:8086
+---------------------------------------
+-- устанавливаем рабочий директорий для вызова CLI в docker у брокера, работающего на порту 9092 ("kafka-2"):
+--docker exec --workdir /opt/kafka/bin/ -it kafka-2 sh
+docker exec --workdir /opt/kafka/bin/ -it broker-1 sh
+
+-- создаем тестовый топик
+./kafka-topics.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --create --topic test-topic
+
+-- В рдном окне терминала создаем producer:
+./kafka-console-producer.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --topic test-topic
+
+-- ввод слов с консоли в топик:
+>hello
+>word
+
+-- в другом окне создаем consumer:
+./kafka-console-consumer.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --topic test-topic --from-beginning
+
+-- выход:
+ Ctrl+C после ввода
+
+------------------------------------------------------------------------------------------------
+
+-- список топиков:
+./kafka-topics.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --list
+
+-- описание партиций и реплик в топиках
+./kafka-topics.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --describe
+
+------------------------------------------------------------------------------------------------
+
+-- переход в раб. директорию docker для создания топика или запуска продюсера или консьюмера из консоли (а не приложения):
+docker exec --workdir /opt/kafka/bin/ -it broker-1 sh
+
+-- создание топика:
+./kafka-topics.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --create --topic product-created-events-topic
+
+-- создание продюсера для топика "product-created-events-topic"
+./kafka-console-producer.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --topic product-created-events-topic --property "print.key=true"
+
+-- создание консьюмера для чтения из топика "product-created-events-topic" с выводом ключей
+./kafka-console-consumer.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --topic product-created-events-topic --property "print.key=true"
+
+------------------------------------------------------------------------------------------------
+-- посылка json продьюсером в топик:
+
+http://localhost:8083/product
+{
+  "title": "New Spring feature",
+  "price": 300,
+  "quantity": 6
+}
+
+------------------------------------------------------------------------------------------------
+-- обработка ошибок - урок 17.Dead Letter Topic (DTL-топик)
+-- В консьюмер-конфиге задано такое поведение консьюмера, что:
+-- при ошибке, консьюмер автоматически создает файл "...-dlt" куда сохраняет ошибочные сообщения в 64-формате
+
+-- пишем в продюсер ошибочные данные (не json)
+ ./kafka-console-producer.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --topic product-created-events-topic --property "print.key=true"
+>{ABS}
+>{BBS}
+
+-- читаем из DTL-топика ошибочные данные
+./kafka-console-consumer.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --topic product-created-events-topic-dlt --property "print.key=true"

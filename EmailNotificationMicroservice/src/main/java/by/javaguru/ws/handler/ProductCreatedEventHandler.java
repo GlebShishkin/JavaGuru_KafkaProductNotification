@@ -37,8 +37,8 @@ public class ProductCreatedEventHandler {
         // сообщения будем отправлять на mock-микросервис
         try {
             // здесь в коде проптсывает REST сообщения на разные адреса ("/200", "/500" или на время делаем недоступным mock-сервис)
-            //String url = "http://localhost:8090/response/200"; // успешно отрабатывается
-            String url = "http://localhost:8090/response/500"; // HttpServerErrorException -> вызывае неповторяющуюся ошибку
+            String url = "http://localhost:8090/response/200"; // успешно отрабатывается
+            //String url = "http://localhost:8090/response/500"; // HttpServerErrorException -> вызывае неповторяющуюся ошибку
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
             if (response.getStatusCode().value() == HttpStatus.OK.value()) {
                 // ответ от mock-микросервиса пришел нормально

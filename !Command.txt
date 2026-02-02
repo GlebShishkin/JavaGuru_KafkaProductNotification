@@ -46,7 +46,7 @@ docker exec --workdir /opt/kafka/bin/ -it broker-1 sh
 ./kafka-console-consumer.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --topic product-created-events-topic --property "print.key=true"
 
 ------------------------------------------------------------------------------------------------
--- посылка json продьюсером в топик:
+-- посылка json продьюсером в топик через ProductMicroservice:
 
 http://localhost:8083/product
 {
@@ -67,3 +67,16 @@ http://localhost:8083/product
 
 -- читаем из DTL-топика ошибочные данные
 ./kafka-console-consumer.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --topic product-created-events-topic-dlt --property "print.key=true"
+
+------------------------------------------------------------------------------------------------
+  Балансировка партиций на примере запуска консьюмеров из консоли. Урок 19
+ Пример запуска сервиса (на примере EmailNotificationMicroservice) из Windows PowerShell (Урок 19):
+ C:\Users\gshishkin\Work\Study\JavaGuru\ProductNotifier\EmailNotificationMicroservice> .\mvnw.cmd spring-boot:run
+
+ Если не виден модуль "core", то нужно сделать на нем Install из Idea. Install - полный цикл сборки модуля.
+ Это делает модуль доступным для использования в качестве зависимости в других локальных проектах.
+
+ При запуске ".\mvnw.cmd spring-boot:run" будет сообщение:
+ "product-created-events: partitions assigned: [product-created-events-topic-0, product-created-events-topic-1, product-created-events-topic-2]"
+ - какие партиции закреплены за запущенным сервером. В данном случае, консьюмер один и за ним закреплены 3 партиции.
+ Если, из другого терминала запустить еще сервер EmailNotificationMicroservice, то произойдет перебалансировка партиций.

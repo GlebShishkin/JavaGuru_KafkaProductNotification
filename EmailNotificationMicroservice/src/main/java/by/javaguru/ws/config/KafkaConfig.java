@@ -54,6 +54,8 @@ public class KafkaConfig {
         config.put("spring.json.trusted.packages",  // .TRUSTED_PACKAGES, - JsonDeserializer.TRUSTED_PACKAGES is deprecated as of Spring for Apache Kafka version 4.0
                 environment.getProperty("spring.kafka.consumer.properties.spring.json.trusted.packages"));
 
+        // обязательное свойство, для нескольких консьюмеров, чтобы сообщения не задваивались
+        // при чтении разными коньюмерами, см урок 19
         config.put(ConsumerConfig.GROUP_ID_CONFIG
                 , environment.getProperty("spring.kafka.consumer.group-id"));
 

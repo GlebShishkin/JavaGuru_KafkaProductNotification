@@ -12,6 +12,21 @@ import org.springframework.web.client.RestTemplate;
 public class EmailNotificationConfig {
 
 
+    // без явного разрешения отсутствует доступ к адресу бд через браузер: "http://localhost:8084"
+    /*
+    @Bean
+    SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().authenticated())
+                .formLogin(withDefaults());
+
+        return http.build();
+    }
+    */
+
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();

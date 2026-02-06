@@ -1,6 +1,5 @@
 ---------------------------------------
---  создание и работа с топиком в docker
--- см. https://hub.docker.com/r/apache/kafka
+-- файл docker-compose.yml сделан на основе https://hub.docker.com/r/apache/kafka
 -- + через docker-compose.yml создадим IU для просмотра Kafka в docker по от. можно зайти http://localhost:8086
 ---------------------------------------
 -- устанавливаем рабочий директорий для вызова CLI в docker у брокера, работающего на порту 9092 ("kafka-2"):

@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 public class EmailNotificationConfig {
 
 
-    // без явного разрешения отсутствует доступ к адресу бд через браузер: "http://localhost:8084"
+    // проба на случай секьюрного доступа к адресу бд консьюмера через браузер: "http://localhost:8084"
     /*
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -26,7 +26,7 @@ public class EmailNotificationConfig {
     }
     */
 
-
+    // использования RestTemplate всегда требует создания @Bean
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();

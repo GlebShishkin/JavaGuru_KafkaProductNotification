@@ -1,4 +1,4 @@
- Пример JavaGuru работы приложения с Kafka расположенного в Docker
+ Пример JavaGuru работы приложения с Kafka расположенного в Docker (JavaGuru Apach Kafka: уроки 11-21)
  см. исходный код https://github.com/AndreiBor/KafkaProductNotification
 
 В проекте 4 модуля:
@@ -10,7 +10,7 @@
 
 Kafka и Kafka-UI (http://localhost:8086) разворачиваются в Docker через docker-compose.yml
 
-БД h2 используется для хранения id сообщения из ProductMicroservice для защиты от задваивания в Консьюмере её обработки (урок 22).
+БД h2 используется для хранения id сообщения из ProductMicroservice для защиты от задваивания в Консьюмере её обработки (урок 21).
 БД h2 размещается в памяти:
 в браузере по адресу: http://localhost:8084/h2-console
 в окне "JDBC_URL" забить адрес из свойства в application.properties "spring.datasource.url": jdbc:h2:mem:testdb
